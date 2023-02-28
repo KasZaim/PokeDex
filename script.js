@@ -37,7 +37,7 @@ async function renderPokemonJson() {
         changeBgColor();*/
     }
 }
-function checkType(pokemonData, i,pokemonFirstType){
+function checkType(pokemonData, i,pokemonFirstType){//TEST 
     if (pokemonData['types'].length === 2) {
             document.getElementById(`first-type${i}`).innerHTML=`${pokemonFirstType}`;
             document.getElementById(`second-type${i}`).innerHTML=`${pokemonData['types'][1]['type']['name']}`;
