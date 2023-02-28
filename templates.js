@@ -1,4 +1,4 @@
-function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg,pokemonFirstType,i){
+function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg,i){
     return/*html*/` 
     <div class="single-pokemon">
         <div class="headline">
@@ -9,8 +9,8 @@ function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg,pokemonFirstTyp
             <img src="img/pokeball1.png" class="single-card-bg">
             <img src="${pokemonImg}" class="pokemon-img">
         </div>
-        <div>
-            <div class="first-type-${i}"></div> <div id="second-type-${i}"></div>
+        <div class="types">
+            <div id="first-type-${i}"></div> <div id="second-type-${i}"></div>
         </div>
     </div>` 
 }

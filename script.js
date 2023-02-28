@@ -32,6 +32,7 @@ async function renderPokemonJson() {
         pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
         console.log(pokemonData);
         document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg,i);
+        checkType(pokemonData, i,pokemonFirstType);
         
         /*changeTypeColor(pokemonFirstType,i)
         changeBgColor();*/
@@ -39,13 +40,12 @@ async function renderPokemonJson() {
 }
 function checkType(pokemonData, i,pokemonFirstType){
     if (pokemonData['types'].length === 2) {
-            document.getElementById(`first-type${i}`).innerHTML=`${pokemonFirstType}`;
-            document.getElementById(`second-type${i}`).innerHTML=`${pokemonData['types'][1]['type']['name']}`;
+            document.getElementById(`first-type-${i}`).innerHTML=`${pokemonFirstType}`;
+            document.getElementById(`second-type-${i}`).innerHTML=`${pokemonData['types'][1]['type']['name']}`;
         } else {
-            document.getElementById(`first-type${i}`).innerHTML=`${pokemonFirstType}`;
+            document.getElementById(`first-type-${i}`).innerHTML=`${pokemonFirstType}`;
+            document.getElementById(`second-type-${i}`).classList.add('d-none');
         }
-    
-    
 }
 function changeTypeColor(pokemonFirstType,i){
     if (pokemonFirstType == 'grass') {
@@ -60,7 +60,7 @@ function checkBottom() {
     let modifier = 1;
     if (currentScroll + modifier > documentHeight) {
         PokemonNames = [];
-        loadPokemonAPI()
+        loadPokemonAPI();
     }
 }
 window.addEventListener('scroll', checkBottom);

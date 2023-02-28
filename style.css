@@ -76,3 +76,18 @@ header{
     padding: 5px;
     background-color: rgba(89, 236, 22, 0.5);
 }
+.types{
+    display: flex;
+    gap: 20px;
+}
+.types div{
+    width: 80px;
+    padding: 5px 0 5px 0;
+    margin: 10px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.d-none{
+    display: none;
+}
