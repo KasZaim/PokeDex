@@ -10,7 +10,7 @@ function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg,i){
             <img src="${pokemonImg}" class="pokemon-img">
         </div>
         <div class="types">
-            <div id="first-type-${i}"></div> <div id="second-type-${i}"></div>
+            <div id="first-type-${pokemonData['id']}"></div> <div id="second-type-${pokemonData['id']}"></div>
         </div>
     </div>` 
 }
