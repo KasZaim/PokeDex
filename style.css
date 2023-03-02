@@ -13,15 +13,16 @@ header{
     right: 0;
     left: 0;
     height: 120px;
-    background-color: bisque;
+    background-color: rgb(210, 233, 255);
     z-index: 5;
-    margin-bottom: 10px;
+    border-bottom: 1px darkgray solid;
+    box-shadow: 4px 4px 7px 7px rgba(0, 0, 0, 0.1);
 }
 .content{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    height: 100vh;
+    padding-top: 10px;
 }
 .single-pokemon{
     display: flex;
@@ -31,9 +32,10 @@ header{
     min-height: 500px;
     background-color: aqua;
     min-width: 350px;
-    border-radius: 10px;
+    border-radius: 33px;
     position: relative;
     transition: all 225ms ease-in-out;
+    box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
 }
 .single-pokemon:hover{
     transform: scale(1.1);
@@ -43,6 +45,7 @@ header{
     opacity: 0.4;
     height: 330px;
     margin-top: 10px;
+    
 }
 .pokemon-img-container{
     position: relative;
@@ -60,7 +63,7 @@ header{
     cursor: pointer;
 }
 .headline{
-    border-radius: 10px;
+    border-radius: 33px;
     background-color: rgba(0, 0, 0, 0.2);
     width: 100%;
     text-align: center;
@@ -108,6 +111,9 @@ header{
 .card-bg-fire{
     background-color:#FD4E5B !important;
 }
+.card-bg-poison{
+    background-color: #9B69D9;
+}
 .type-bg-poison{
     background-color: #CEB5EC !important;
 }
@@ -125,4 +131,72 @@ header{
 }
 .type-bg-water{
     background-color: #00a6ff!important;
+}
+.card-bg-normal{
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+.card-bg-electric{
+    background-color: yellow !important;
+}
+.type-bg-electric{
+    background-color: #ffdb07 !important;
+}
+.type-bg-ground{
+    background-color: #d19b5d !important;
+}
+.card-bg-ground{
+    background-color: #6E491F;
+}
+.card-bg-fairy{
+    background-color: #EA1369;
+}
+.type-bg-fairy{
+    background-color: #F48AB5 !important;
+}
+.card-bg-fighting{
+    background-color: #ED623A !important;
+}
+.type-bg-fighting{
+    background-color: #F6B29E !important;
+}
+.type-bg-psychic{
+    background-color: #af8af3 !important;
+}
+.card-bg-psychic{
+    background-color: #6f42c1 !important;
+}
+.card-bg-rock{
+    background-color: #818181 !important;
+}
+.card-bg-steel{
+    background-color: gray !important;
+}
+.type-bg-steel{
+    background-color: #818181 !important;
+}
+.card-bg-ice{
+    background-color: aqua;
+}
+.type-bg-ice{
+    background-color: rgb(12, 215, 215) !important;
+}
+.type-bg-ghost{
+    background-color: darkgrey !important;
+}
+.card-bg-ghost{
+    background-color: #725555 !important;
+}
+.card-bg-dragon{
+    background-color: #F5BA6F !important;
+}
+.type-bg-dragon{
+    background-color: #f7d3a4 !important;
+}
+.type-bg-dark{
+    background-color: black !important;
+     color: white !important;
+}
+.card-bg-dark{
+    background-color: #000060 !important;
+    color: white;
 }

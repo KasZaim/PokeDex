@@ -69,7 +69,18 @@ function changeTypeColor(pokemonData) {
         poison: 'type-bg-poison',
         flying:'type-bg-flying',
         bug:'type-bg-bug',
-        water:'type-bg-water'
+        water:'type-bg-water',
+        normal:'type-bg-normal',
+        electric:'type-bg-electric',
+        ground:'type-bg-ground',
+        fairy:'type-bg-fairy',
+        fighting:'type-bg-fighting',
+        psychic:'type-bg-psychic',
+        steel:'type-bg-steel',
+        ice:'type-bg-ice',
+        ghost:'type-bg-ghost',
+        dragon:'type-bg-dragon',
+        dark:'type-bg-dark'
     };
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
@@ -78,30 +89,16 @@ function changeTypeColor(pokemonData) {
         let typeElement1 = document.getElementById(`second-type-${pokemonData['id']}`);
         let typeBackground = typeBackgrounds[type];
 
-        if (i=== 0 && typeElement) {
+        if (i===0 && typeElement) {//überprüft ob das typelement schon gerendert wurde und fügt dann die entprechende Hintergrundfarbe nach type hinzu
             typeElement.classList.add(typeBackground);
-            
+            card.classList.add(`card-bg-${type.toLowerCase()}`);
         }
-        if (i===1 && pokemonData['types'].length > 1 && typeElement1) {
+        if (i===1 && pokemonData['types'].length > 1 && typeElement1) {// überprüft ob i im zweiten durchgang ist und ob es einen zweiten typen gibt 
             let typeBackground1 = typeBackgrounds[pokemonData['types'][1]['type']['name']];
             typeElement1.classList.add(typeBackground1);
         }
-        if (card) {
-            card.classList.add(`card-bg-${type.toLowerCase()}`);
-        }
     }
 }
-/*
-function changeTypeColor(pokemonFirstType,pokemonData) {
-    let firstType = document.getElementById(`first-type-${pokemonData['id']}`);
-    let singleCard = document.getElementById(`single-pokemon-${pokemonData['id']}`);
-    if (pokemonFirstType == 'Grass') {
-        firstType.classList.add('type-bg-grass');
-    }else if (pokemonFirstType =='Fire') {
-        firstType.classList.add('type-bg-fire');
-    }
-}
-*/
 
 function checkBottom() {
     let documentHeight = document.body.scrollHeight;
