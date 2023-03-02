@@ -114,6 +114,15 @@ header{
 .type-bg-flying{
     background-color: #CBD8E2 !important;
 }
-.type-bg-bug{
+.card-bg-bug{
     background-color: #429854 !important;
+}
+.type-bg-bug{
+    background-color: #beffcb!important;
+}
+.card-bg-water{
+    background-color: #94DBEE !important;
+}
+.type-bg-water{
+    background-color: #00a6ff!important;
 }

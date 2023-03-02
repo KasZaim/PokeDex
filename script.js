@@ -52,8 +52,11 @@ function showContent(pokemonData, i) {
 function checkType(pokemonData, pokemonFirstType) {
 
     if (pokemonData['types'].length === 2) {
+        pokemonSecType = pokemonData['types'][1]['type']['name'];
+        pokemonSecType =pokemonSecType[0].toUpperCase() + pokemonSecType.slice(1);
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
-        document.getElementById(`second-type-${pokemonData['id']}`).innerHTML = `${pokemonData['types'][1]['type']['name']}`;
+        document.getElementById(`second-type-${pokemonData['id']}`).innerHTML = `${pokemonSecType}`;
+        
     } else {
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
         document.getElementById(`second-type-${pokemonData['id']}`).classList.add('d-none');
@@ -65,7 +68,8 @@ function changeTypeColor(pokemonData) {
         fire: 'type-bg-fire',
         poison: 'type-bg-poison',
         flying:'type-bg-flying',
-        bug:'type-bg-bug'
+        bug:'type-bg-bug',
+        water:'type-bg-water'
     };
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
