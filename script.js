@@ -8,7 +8,7 @@ async function loadPokemonAPI() {
     currentPokemon = await response.json();
     renderPokemonList();
     offset += 20;
-   
+
 
 }
 function renderPokemonList() {
@@ -18,7 +18,7 @@ function renderPokemonList() {
         PokemonNames.push(element['name']);
     }
     renderPokemonJson();
-    
+
 }
 async function renderPokemonJson() {
     for (let i = 0; i < PokemonNames.length; i++) {
@@ -27,30 +27,30 @@ async function renderPokemonJson() {
         let pokemonData = await response.json();
 
         showContent(pokemonData, i);
-         
+
     }
 }
-    function showContent(pokemonData, i) {
-        let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
-        let pokemonName = pokemonData['name'];
-        let pokemonFirstType = pokemonData['types'][0]['type']['name'];
-        
-
-        pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
-        pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
-        
-        console.log(pokemonData);
-        document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg, i);
-
-        checkType(pokemonData, pokemonFirstType);
-
-        changeTypeColor(pokemonFirstType,pokemonData);
-        /*changeBgColor();*/
-    }
+function showContent(pokemonData, i) {
+    let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
+    let pokemonName = pokemonData['name'];
+    let pokemonFirstType = pokemonData['types'][0]['type']['name'];
 
 
-function checkType(pokemonData,pokemonFirstType) {
-    
+    pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
+    pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
+
+    console.log(pokemonData);
+    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg, i);
+
+    checkType(pokemonData, pokemonFirstType);
+
+    changeTypeColor(pokemonData);
+
+}
+
+
+function checkType(pokemonData, pokemonFirstType) {
+
     if (pokemonData['types'].length === 2) {
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
         document.getElementById(`second-type-${pokemonData['id']}`).innerHTML = `${pokemonData['types'][1]['type']['name']}`;
@@ -61,21 +61,30 @@ function checkType(pokemonData,pokemonFirstType) {
 }
 function changeTypeColor(pokemonData) {
     let typeBackgrounds = {
-        Grass: 'type-bg-grass',
-        Fire: 'type-bg-fire',
-        
+        grass: 'type-bg-grass',
+        fire: 'type-bg-fire',
+        poison: 'type-bg-poison',
+        flying:'type-bg-flying',
+        bug:'type-bg-bug'
     };
-
-    let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
-
     for (let i = 0; i < pokemonData['types'].length; i++) {
+        let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
         let type = pokemonData['types'][i]['type']['name'];
-        let typeElement = document.getElementById(`type-${i+1}-${pokemonData['id']}`);
+        let typeElement = document.getElementById(`first-type-${pokemonData['id']}`);
+        let typeElement1 = document.getElementById(`second-type-${pokemonData['id']}`);
         let typeBackground = typeBackgrounds[type];
 
-        typeElement.innerHTML = type[0].toUpperCase() + type.slice(1);
-        typeElement.classList.add(typeBackground);
-        card.classList.add(`card-bg-${type.toLowerCase()}`);
+        if (i=== 0 && typeElement) {
+            typeElement.classList.add(typeBackground);
+            
+        }
+        if (i===1 && pokemonData['types'].length > 1 && typeElement1) {
+            let typeBackground1 = typeBackgrounds[pokemonData['types'][1]['type']['name']];
+            typeElement1.classList.add(typeBackground1);
+        }
+        if (card) {
+            card.classList.add(`card-bg-${type.toLowerCase()}`);
+        }
     }
 }
 /*
@@ -84,10 +93,8 @@ function changeTypeColor(pokemonFirstType,pokemonData) {
     let singleCard = document.getElementById(`single-pokemon-${pokemonData['id']}`);
     if (pokemonFirstType == 'Grass') {
         firstType.classList.add('type-bg-grass');
-        singleCard.classList.add('card-bg-grass');
     }else if (pokemonFirstType =='Fire') {
         firstType.classList.add('type-bg-fire');
-        singleCard.classList.add('card-bg-fire');
     }
 }
 */
@@ -96,7 +103,7 @@ function checkBottom() {
     let documentHeight = document.body.scrollHeight;
     let currentScroll = window.scrollY + window.innerHeight;
     let modifier = 1;
-    if (currentScroll + modifier > documentHeight ) {
+    if (currentScroll + modifier > documentHeight) {
         PokemonNames = [];
         loadPokemonAPI()
     }
