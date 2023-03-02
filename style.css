@@ -91,3 +91,16 @@ header{
 .d-none{
     display: none;
 }
+.type-bg-grass{
+    background-color: #22f022 !important;
+}
+.card-bg-grass{
+    background-color:rgba(71, 167, 26, 0.5) !important;
+}
+.type-bg-fire{
+    background-color: rgb(225, 74, 74) !important;
+}
+.card-bg-fire{
+    background-color:rgba(252, 64, 64, 0.5) !important;
+}
+
