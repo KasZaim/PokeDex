@@ -96,28 +96,41 @@ function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
 
     }
 }
-function openPokemon(id,pokemonFirstType,pokemonData,pokeImg){//opens up the Pokemon Popup
+function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName){//opens up the Pokemon Popup
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
+    let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
     
     content.innerHTML=/*html*/`
     <div class="selected-pokemon">
-        <img src="img/close.png" alt="close-popup">
+        <img src="img/close.png" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
         <div class="selected-poke-bg" id="selected-poke-bg-${id}">
             <div class="pokemon-img-container" >
                 <img src="img/pokeball1.png" class="single-card-bg">
                 <img src="${pokeImg}" class="pokemon-img" style="transform: scale(1);">
             </div>
         </div>
+        <div class="selected-pokename" id="selected-pokename-${id}">
+            <img src="img/left.png" id="left">
+            <h2>${pokemonName}</h2>
+            <span>#ID 000${id}</span>
+            <img src="img/right.png" id="right">
+        </div>
+        
     </div> `;
-    changeSelectedBg(id,pokemonData,pokemonFirstType)
+    changeSelectedBg(id,pokemonData,pokemonFirstType,typeBackgroundss)
 }
-function changeSelectedBg(id, pokemonData,pokemonFirstType){
-    let selectedPokemon = document.getElementById(`selected-poke-bg-${id}`)
-    let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
-    selectedPokemon.classList.add(`card-bg-${pokemonFirstType.toLowerCase()}`);
+function changeSelectedBg(id, pokemonData,pokemonFirstType,typeBackgroundss){
+    let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
+    let typeBg = document.getElementById(`selected-pokename-${id}`);
+    selectedPokemonbg.classList.add(`card-bg-${pokemonFirstType.toLowerCase()}`);
+    typeBg.classList.add(`${typeBackgroundss}`);
+}
+function closePopup(){
+    document.getElementById('popup').classList.add('d-none');
+    document.getElementById('content').style.filter = 'blur(0px)';
 }
 function checkBottom() {//load more 20 Pokemon
     let documentHeight = document.body.scrollHeight;
