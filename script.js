@@ -2,7 +2,7 @@ let currentPokemon;
 let offset = 0;
 let PokemonNames = [];
 
-async function loadPokemonAPI() {
+async function loadPokemonAPI() {//loads the list from the PokemonAPI
     let url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`;
     let response = await fetch(url);
     currentPokemon = await response.json();
@@ -11,7 +11,7 @@ async function loadPokemonAPI() {
 
 
 }
-function renderPokemonList() {
+function renderPokemonList() {//loads the Names of the Pokemon and push them in the Array
     let pokeNames = currentPokemon['results'];
     for (let i = 0; i < pokeNames.length; i++) {
         const element = pokeNames[i];
@@ -20,7 +20,7 @@ function renderPokemonList() {
     renderPokemonJson();
 
 }
-async function renderPokemonJson() {
+async function renderPokemonJson() {//loads the single Json for each Pokemon
     for (let i = 0; i < PokemonNames.length; i++) {
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
@@ -30,7 +30,7 @@ async function renderPokemonJson() {
 
     }
 }
-function showContent(pokemonData, i) {
+function showContent(pokemonData, i) {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
@@ -49,7 +49,7 @@ function showContent(pokemonData, i) {
 }
 
 
-function checkType(pokemonData, pokemonFirstType) {
+function checkType(pokemonData, pokemonFirstType) {//adds the Type category
 
     if (pokemonData['types'].length === 2) {
         pokemonSecType = pokemonData['types'][1]['type']['name'];
@@ -62,7 +62,7 @@ function checkType(pokemonData, pokemonFirstType) {
         document.getElementById(`second-type-${pokemonData['id']}`).classList.add('d-none');
     }
 }
-function changeTypeColor(pokemonData) {
+function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
     let typeBackgrounds = {
         grass: 'type-bg-grass',
         fire: 'type-bg-fire',
@@ -100,7 +100,7 @@ function changeTypeColor(pokemonData) {
     }
 }
 
-function checkBottom() {
+function checkBottom() {//load more 20 Pokemon
     let documentHeight = document.body.scrollHeight;
     let currentScroll = window.scrollY + window.innerHeight;
     let modifier = 1;
