@@ -99,7 +99,12 @@ function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
         }
     }
 }
+function openPokemon(id){
+    let popup = document.getElementById('popup');
+    document.getElementById('content').style.filter = 'blur(5px)';
+    popup.classList.remove('d-none');
 
+}
 function checkBottom() {//load more 20 Pokemon
     let documentHeight = document.body.scrollHeight;
     let currentScroll = window.scrollY + window.innerHeight;

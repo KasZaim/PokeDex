@@ -1,6 +1,6 @@
-function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg,i){
+function pokedexCardTemplate(pokemonName, pokemonData,pokemonImg){
     return/*html*/` 
-    <div class="single-pokemon" id="single-pokemon-${pokemonData['id']}">
+    <div onclick="openPokemon(${pokemonData['id']})" class="single-pokemon" id="single-pokemon-${pokemonData['id']}">
         <div class="headline">
             <span>${pokemonName}</span>
             <p class ="id-nr">#000${pokemonData['id']}</p>
