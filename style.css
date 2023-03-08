@@ -15,6 +15,9 @@ body{
     bottom: 0;
     background-color: rgba(255, 255, 255, 0.4);
     z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 header{
     position: sticky;
@@ -208,4 +211,19 @@ header{
 .card-bg-dark{
     background-color: #000060 !important;
     color: white;
+}
+.selected-pokemon{
+    position: relative;
+    padding: 10px;
+    height: 90vh;
+    width: 35vb;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.selected-poke-bg{
+    padding: 20px;
+    border-top-right-radius: 33px;
+    border-top-left-radius: 33px;
 }

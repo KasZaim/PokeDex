@@ -1,7 +1,25 @@
 let currentPokemon;
 let offset = 0;
 let PokemonNames = [];
-
+ let typeBackgrounds = {
+        grass: 'type-bg-grass',
+        fire: 'type-bg-fire',
+        poison: 'type-bg-poison',
+        flying:'type-bg-flying',
+        bug:'type-bg-bug',
+        water:'type-bg-water',
+        normal:'type-bg-normal',
+        electric:'type-bg-electric',
+        ground:'type-bg-ground',
+        fairy:'type-bg-fairy',
+        fighting:'type-bg-fighting',
+        psychic:'type-bg-psychic',
+        steel:'type-bg-steel',
+        ice:'type-bg-ice',
+        ghost:'type-bg-ghost',
+        dragon:'type-bg-dragon',
+        dark:'type-bg-dark'
+    };
 async function loadPokemonAPI() {//loads the list from the PokemonAPI
     let url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`;
     let response = await fetch(url);
@@ -34,25 +52,21 @@ function showContent(pokemonData, i) {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
-
-
+    
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
 
     console.log(pokemonData);
-    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg, i);
+    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg,pokemonFirstType);
 
     checkType(pokemonData, pokemonFirstType);
-
     changeTypeColor(pokemonData);
 
 }
-
-
 function checkType(pokemonData, pokemonFirstType) {//adds the Type category
 
     if (pokemonData['types'].length === 2) {
-        pokemonSecType = pokemonData['types'][1]['type']['name'];
+        let pokemonSecType = pokemonData['types'][1]['type']['name'];
         pokemonSecType =pokemonSecType[0].toUpperCase() + pokemonSecType.slice(1);
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
         document.getElementById(`second-type-${pokemonData['id']}`).innerHTML = `${pokemonSecType}`;
@@ -63,25 +77,7 @@ function checkType(pokemonData, pokemonFirstType) {//adds the Type category
     }
 }
 function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
-    let typeBackgrounds = {
-        grass: 'type-bg-grass',
-        fire: 'type-bg-fire',
-        poison: 'type-bg-poison',
-        flying:'type-bg-flying',
-        bug:'type-bg-bug',
-        water:'type-bg-water',
-        normal:'type-bg-normal',
-        electric:'type-bg-electric',
-        ground:'type-bg-ground',
-        fairy:'type-bg-fairy',
-        fighting:'type-bg-fighting',
-        psychic:'type-bg-psychic',
-        steel:'type-bg-steel',
-        ice:'type-bg-ice',
-        ghost:'type-bg-ghost',
-        dragon:'type-bg-dragon',
-        dark:'type-bg-dark'
-    };
+   
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
         let type = pokemonData['types'][i]['type']['name'];
@@ -97,13 +93,31 @@ function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
             let typeBackground1 = typeBackgrounds[pokemonData['types'][1]['type']['name']];
             typeElement1.classList.add(typeBackground1);
         }
+
     }
 }
-function openPokemon(id){
+function openPokemon(id,pokemonFirstType,pokemonData,pokeImg){//opens up the Pokemon Popup
     let popup = document.getElementById('popup');
+    let content = document.getElementById('popup-content');
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
-
+    
+    content.innerHTML=/*html*/`
+    <div class="selected-pokemon">
+        <img src="img/close.png" alt="close-popup">
+        <div class="selected-poke-bg" id="selected-poke-bg-${id}">
+            <div class="pokemon-img-container" >
+                <img src="img/pokeball1.png" class="single-card-bg">
+                <img src="${pokeImg}" class="pokemon-img" style="transform: scale(1);">
+            </div>
+        </div>
+    </div> `;
+    changeSelectedBg(id,pokemonData,pokemonFirstType)
+}
+function changeSelectedBg(id, pokemonData,pokemonFirstType){
+    let selectedPokemon = document.getElementById(`selected-poke-bg-${id}`)
+    let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
+    selectedPokemon.classList.add(`card-bg-${pokemonFirstType.toLowerCase()}`);
 }
 function checkBottom() {//load more 20 Pokemon
     let documentHeight = document.body.scrollHeight;
