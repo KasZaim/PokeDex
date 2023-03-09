@@ -216,7 +216,7 @@ header{
     position: relative;
     padding: 10px;
     height: 90vh;
-    width: 550px;
+    width: 600px;
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -231,6 +231,7 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: -27px;
 }
 .selected-pokename{
     position: relative;
@@ -271,11 +272,33 @@ header{
     border-bottom-left-radius: 33px;
     border-bottom-right-radius: 33px;
     padding: 10px;
-    margin-top: -80px;
+    margin-top: -53px;
 }
+.General{
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    
+}
+#general{
+    min-width: 120px;
+    text-align: center;
+    background-color: white;
+    padding: 10px;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+}
+#general-types{
+    min-width: 120px;
+    text-align: center;
+    background-color: white;
+    padding: 10px;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+}
+
 .stats{
     width: 100%;
-    margin-top: 92px;
     display: flex;
     justify-content: center;
 }

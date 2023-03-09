@@ -52,17 +52,22 @@ function showContent(pokemonData, i) {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
-    
+    let height = pokemonData['height'];
+    let weight = pokemonData['weight'];
+    let pokemonId = String(pokemonData.id).padStart(4, '0');
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
 
     console.log(pokemonData);
-    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg,pokemonFirstType);
+    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg,pokemonFirstType,height,pokemonId,weight);
 
     checkType(pokemonData, pokemonFirstType);
     changeTypeColor(pokemonData);
 
 }
+
+  
+
 function checkType(pokemonData, pokemonFirstType) {//adds the Type category
 
     if (pokemonData['types'].length === 2) {
@@ -96,7 +101,7 @@ function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
 
     }
 }
-function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName){//opens up the Pokemon Popup
+function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,pokemonId,weight){//opens up the Pokemon Popup
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
     let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
@@ -115,14 +120,31 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName){//open
         <div class="selected-pokename" id="selected-pokename-${id}">
             <img src="img/left.png" id="left">
             <h2>${pokemonName}</h2>
-            <span style="margin-bottom: 6px;">#ID 000${id}</span>
+            <span style="margin-bottom: 6px;">#ID ${pokemonId}</span>
             <img src="img/right.png" id="right">
         </div>
         <div class="stats-bg">
-            <div class="stats">
+            <div class="General">
+                <div id="general">General</div><div id="general-types">Types</div>
+            </div>
+            <div>
                 <div>
-                    
+                    <span>
+                        Height
+                    </span> <br>
+                    <div>
+                        <b>${(height/10).toFixed(1).replace('.',',') + ' m'}</b>
+                    </div>
+                    <span>
+                        Weight
+                    </span> <br>
+                    <div>
+                        <b>${(weight/10).toFixed(1).replace('.',',') + ' kg'}</b>
+                    </div>
                 </div>
+            </div>
+            <div class="stats">
+                
                 <div class="stats-content">
                     <div class="single-bar">
                         <span class="stats-span">HP</span>
