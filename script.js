@@ -115,10 +115,57 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName){//open
         <div class="selected-pokename" id="selected-pokename-${id}">
             <img src="img/left.png" id="left">
             <h2>${pokemonName}</h2>
-            <span>#ID 000${id}</span>
+            <span style="margin-bottom: 6px;">#ID 000${id}</span>
             <img src="img/right.png" id="right">
         </div>
+        <div class="stats-bg">
+            <div class="stats">
+                <div>
+                    
+                </div>
+                <div class="stats-content">
+                    <div class="single-bar">
+                        <span class="stats-span">HP</span>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="single-bar">
+                        <span class="stats-span">Attack</span>
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar" style="width: 25%"></div>
+                        </div>
+                    </div>
+                <div class="single-bar">
+                    <span class="stats-span">Defense</span>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="single-bar">
+                    <span class="stats-span">Special-Attack</span>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="single-bar">
+                    <span class="stats-span">Special-Defense</span>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="single-bar">
+                    <span class="stats-span">Speed</span>
+                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar" style="width: 100%"></div>
+                    </div>
+                </div>
+                </div>
+               
+                
+            </div>
         
+        </div>
     </div> `;
     changeSelectedBg(id,pokemonData,pokemonFirstType,typeBackgroundss)
 }

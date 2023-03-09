@@ -216,7 +216,7 @@ header{
     position: relative;
     padding: 10px;
     height: 90vh;
-    width: 500px;
+    width: 550px;
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -240,6 +240,7 @@ header{
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 30px;
 }
 .selected-pokename img{
     position: absolute;
@@ -254,4 +255,45 @@ header{
 }
 #right{
     right: 2px;
+}
+.progress{
+    width: 70%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.stats-bg{
+    width: 100%;
+    background-color:#ECECEC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom-left-radius: 33px;
+    border-bottom-right-radius: 33px;
+    padding: 10px;
+    margin-top: -80px;
+}
+.stats{
+    width: 100%;
+    margin-top: 92px;
+    display: flex;
+    justify-content: center;
+}
+.single-bar{
+    display: flex;
+    width: 80%;
+    margin: 7px;
+    gap: 10px;
+}
+.stats-span{
+    width: 125px;
+    font-size: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+.stats-content{
+    width: 90%;
+    padding: 5px;
+    border-radius: 30px;
+    background-color: white;
 }
