@@ -142,6 +142,14 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,
                         <b>${(weight/10).toFixed(1).replace('.',',') + ' kg'}</b>
                     </div>
                 </div>
+                <div>
+                    <span>
+                        Abilities
+                    </span> <br>
+                    <div>
+                        
+                    </div>
+                </div>
             </div>
             <div class="stats">
                 
