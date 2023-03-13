@@ -1,4 +1,4 @@
-let currentPokemon;
+let pokemonData;
 let offset = 0;
 let PokemonNames = [];
  let typeBackgrounds = {
@@ -42,13 +42,13 @@ async function renderPokemonJson() {//loads the single Json for each Pokemon
     for (let i = 0; i < PokemonNames.length; i++) {
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
-        let pokemonData = await response.json();
+        pokemonData = await response.json();
 
-        showContent(pokemonData, i);
+        showContent();
 
     }
 }
-function showContent(pokemonData, i) {//render the Pokemons Card,IMG, Name
+function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
@@ -58,17 +58,16 @@ function showContent(pokemonData, i) {//render the Pokemons Card,IMG, Name
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
 
-    console.log(pokemonData);
+    console.log(pokemonData)
     document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonData, pokemonImg,pokemonFirstType,height,pokemonId,weight);
-
-    checkType(pokemonData, pokemonFirstType);
-    changeTypeColor(pokemonData);
+    
+    checkType( pokemonFirstType);
+    changeTypeColor();
+    
 
 }
 
-  
-
-function checkType(pokemonData, pokemonFirstType) {//adds the Type category
+function checkType( pokemonFirstType) {//adds the Type category
 
     if (pokemonData['types'].length === 2) {
         let pokemonSecType = pokemonData['types'][1]['type']['name'];
@@ -81,7 +80,7 @@ function checkType(pokemonData, pokemonFirstType) {//adds the Type category
         document.getElementById(`second-type-${pokemonData['id']}`).classList.add('d-none');
     }
 }
-function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
+function changeTypeColor() {// Changes the cards and type bg Color
    
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
@@ -101,13 +100,12 @@ function changeTypeColor(pokemonData) {// Changes the cards and type bg Color
 
     }
 }
-function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,pokemonId,weight){//opens up the Pokemon Popup
+function openPokemon(id,pokemonFirstType,pokeImg,pokemonName,height,pokemonId,weight){//opens up the Pokemon Popup
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
     let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
-    
     content.innerHTML=/*html*/`
     <div class="selected-pokemon">
         <img src="img/close.png" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
@@ -146,13 +144,12 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,
                     <span>
                         Abilities
                     </span> <br>
-                    <div>
+                    <div id="abilities-${id}">
                         
                     </div>
                 </div>
             </div>
             <div class="stats">
-                
                 <div class="stats-content">
                     <div class="single-bar">
                         <span class="stats-span">HP</span>
@@ -191,19 +188,23 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,
                     </div>
                 </div>
                 </div>
-               
-                
             </div>
         
         </div>
     </div> `;
-    changeSelectedBg(id,pokemonData,pokemonFirstType,typeBackgroundss)
+    changeSelectedBg(id,pokemonFirstType,typeBackgroundss);
+    renderAbilities();
+    
 }
-function changeSelectedBg(id, pokemonData,pokemonFirstType,typeBackgroundss){
+function changeSelectedBg(id,pokemonFirstType,typeBackgroundss){
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
     let typeBg = document.getElementById(`selected-pokename-${id}`);
     selectedPokemonbg.classList.add(`card-bg-${pokemonFirstType.toLowerCase()}`);
     typeBg.classList.add(`${typeBackgroundss}`);
+}
+function renderAbilities(){
+    let ability = pokemonData['abilities'];
+    console.log(ability)
 }
 function closePopup(){
     document.getElementById('popup').classList.add('d-none');
