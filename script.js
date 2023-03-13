@@ -127,7 +127,7 @@ function openPokemon(id,pokemonFirstType,pokemonData,pokeImg,pokemonName,height,
             <div class="General">
                 <div id="general">General</div><div id="general-types">Types</div>
             </div>
-            <div>
+            <div class="infos">
                 <div>
                     <span>
                         Height
