@@ -99,7 +99,7 @@ header{
     display: flex;
     gap: 20px;
 }
-.types div{
+.pokemon-single-type{
     width: 80px;
     padding: 5px 0 5px 0;
     margin: 10px;
@@ -280,23 +280,29 @@ header{
     justify-content: center;
     
 }
-#general{
+.general-btn{
     min-width: 120px;
     text-align: center;
     background-color: white;
     padding: 10px;
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
+    cursor: pointer;
 }
-#general-types{
+.general-types{
     min-width: 120px;
     text-align: center;
     background-color: white;
     padding: 10px;
     border-top-right-radius: 50px;
     border-top-left-radius: 50px;
+    cursor: pointer;
+    
 }
-
+.inactive-btn{
+    border:1px solid rgba(0, 0, 0, 0.1);
+    background-color: #ECECEC;
+}
 .stats{
     width: 100%;
     display: flex;
@@ -329,4 +335,7 @@ header{
     margin-bottom: 12px;
     padding: 7px;
     border-radius: 30px;
+}
+.abilities{
+    text-transform: capitalize;
 }
