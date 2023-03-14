@@ -1,6 +1,7 @@
 let pokemonData;
 let offset = 0;
 let PokemonNames = [];
+let pokemonJson = [];
 let typeBackgrounds = {
     grass: 'type-bg-grass',
     fire: 'type-bg-fire',
@@ -43,9 +44,10 @@ async function renderPokemonJson() {//loads the single Json for each Pokemon
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
         pokemonData = await response.json();
-
+        pokemonJson.push(pokemonData);
         showContent();
     }
+    
 }
 function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
@@ -53,12 +55,11 @@ function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
     let height = pokemonData['height'];
     let weight = pokemonData['weight'];
-    console.log(pokemonData)
-    let pokemonId = String(pokemonData.id).padStart(4, '0');
+    let pokemonId = String(pokemonData.id).padStart(4, '0');//füllt die angezeigte ID mit 0
+    
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
     document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonImg, pokemonFirstType, height, pokemonId, weight);
-
     checkType(pokemonFirstType);
     changeTypeColor();
 }
@@ -100,12 +101,12 @@ async function openPokemon(id, pokemonFirstType, pokeImg, pokemonName, height, p
     let response = await fetch(pokemonUrl);
     let currentPokemonJson = await response.json();
     pokemonData = currentPokemonJson;
-    console.log(pokemonData)
 
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
     let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
     let pokemonSecType = pokemonData['types'][1]['type']['name'];
+    
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
     content.innerHTML =/*html*/`
@@ -158,52 +159,18 @@ async function openPokemon(id, pokemonFirstType, pokeImg, pokemonName, height, p
                 </div>
             </div>
             
-            <div class="stats">
-                <div class="stats-content">
-                    <div class="single-bar">
-                        <span class="stats-span">HP</span>
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="single-bar">
-                        <span class="stats-span">Attack</span>
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar" style="width: 25%"></div>
-                        </div>
-                    </div>
-                <div class="single-bar">
-                    <span class="stats-span">Defense</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 50%"></div>
-                    </div>
-                </div>
-                <div class="single-bar">
-                    <span class="stats-span">Special-Attack</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="single-bar">
-                    <span class="stats-span">Special-Defense</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                </div>
-                <div class="single-bar">
-                    <span class="stats-span">Speed</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                </div>
-                </div>
+            <div class="stats" id="stats-${id}">
+                
             </div>
         
         </div>
     </div> `;
     changeSelectedBg(id, pokemonFirstType, typeBackgroundss);
     loadAbilities(id);
-
+    renderStats(id);
+}
+function renderStats(id){
+    document.getElementById(`stats-${id}`).innerHTML= statsBars();
 }
 function changeSelectedBg(id, pokemonFirstType, typeBackgroundss) {
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
