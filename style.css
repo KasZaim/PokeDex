@@ -243,6 +243,7 @@ header{
     align-items: center;
     flex-direction: column;
     border-radius: 30px;
+    text-transform: capitalize;
 }
 .selected-pokename img{
     position: absolute;

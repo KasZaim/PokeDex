@@ -47,24 +47,20 @@ async function renderPokemonJson() {//loads the single Json for each Pokemon
         pokemonJson.push(pokemonData);
         showContent();
     }
-    
 }
 function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
-    let pokemonFirstType = pokemonData['types'][0]['type']['name'];
-    let height = pokemonData['height'];
-    let pokemonId = String(pokemonData.id).padStart(4, '0');//füllt die angezeigte ID mit 0
-    console.log(pokemonData)
+    let pokemonId = String(pokemonData.id).padStart(4, '0');//fills the ID's with 0
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
-    pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
-    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonImg, pokemonFirstType, height, pokemonId);
-    checkType(pokemonFirstType);
+    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonImg, pokemonId);
+    checkType();
     changeTypeColor();
 }
 
-function checkType(pokemonFirstType) {//adds the Type category
-
+function checkType() {//adds the Type category
+    let pokemonFirstType = pokemonData['types'][0]['type']['name'];
+    pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
     if (pokemonData['types'].length === 2) {
         let pokemonSecType = pokemonData['types'][1]['type']['name'];
         pokemonSecType = pokemonSecType[0].toUpperCase() + pokemonSecType.slice(1);
@@ -85,7 +81,7 @@ function changeTypeColor() {// Changes the cards and type bg Color
         let typeElement1 = document.getElementById(`second-type-${pokemonData['id']}`);
         let typeBackground = typeBackgrounds[type];
 
-        if (i === 0 && typeElement) {//überprüft ob das typelement schon gerendert wurde und fügt dann die entprechende Hintergrundfarbe nach type hinzu
+        if (i === 0 && typeElement) {//checks if the typeElement exists and adds the bg Color 
             typeElement.classList.add(typeBackground);
             card.classList.add(`card-bg-${type.toLowerCase()}`);
         }
@@ -97,13 +93,17 @@ function changeTypeColor() {// Changes the cards and type bg Color
     }
 }
 
-async function openPokemon(id, pokeImg, pokemonName, height, pokemonId) {//opens up the Pokemon Popup
+async function openPokemon(id) {//opens up the Pokemon Popup
     let currentPokemon = pokemonJson[id-1];
+    let pokeImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    let pokemonName = currentPokemon['name'];
+    let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
+    let pokemonId = String(currentPokemon.id).padStart(4, '0');
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
-    let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
     let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
     let weight = currentPokemon['weight'];
+    let height = currentPokemon['height'];
     
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
@@ -120,7 +120,7 @@ async function openPokemon(id, pokeImg, pokemonName, height, pokemonId) {//opens
             <img onclick="previousPokemon()" src="img/left.png" id="left">
             <h2>${pokemonName}</h2>
             <span style="margin-bottom: 6px;">#ID ${pokemonId}</span>
-            <img onclick="nextPokemon(${id})" src="img/right.png" id="right">
+            <img onclick="nextPokemon(${id},${pokemonId})" src="img/right.png" id="right">
         </div>
         <div class="stats-bg">
             <div id="General-${id}" class="General">
@@ -166,7 +166,7 @@ async function openPokemon(id, pokeImg, pokemonName, height, pokemonId) {//opens
     renderStats(id);
     renderSecondTypeInGeneral(currentPokemon,id);
 }
-function renderSecondTypeInGeneral(currentPokemon,id){
+function renderSecondTypeInGeneral(currentPokemon,id){//renders the Second Type of the Pokemon in Popup
     if (currentPokemon['types'].length > 1) {
         let secType = currentPokemon['types'][1]['type']['name'];
         document.getElementById(`Typen-${id}`).innerHTML+=`
@@ -176,10 +176,11 @@ function renderSecondTypeInGeneral(currentPokemon,id){
 function renderStats(id){
     document.getElementById(`stats-${id}`).innerHTML= statsBars();
 }
-function nextPokemon(id){
-    currentPokemon = pokemonJson[id++];
-    openPokemon(currentPokemon);
-    console.log(nextPokemon)
+function nextPokemon(id,pokemonId){//should show up the next Pokemon
+    id++
+    pokemonId++
+    openPokemon(id,pokemonId);
+    console.log(pokemonId);
 }
 function changeSelectedBg(id, pokeFirstTyp, typeBtnBackground) {
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
