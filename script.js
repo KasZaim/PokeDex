@@ -54,12 +54,11 @@ function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonName = pokemonData['name'];
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
     let height = pokemonData['height'];
-    let weight = pokemonData['weight'];
     let pokemonId = String(pokemonData.id).padStart(4, '0');//füllt die angezeigte ID mit 0
-    
+    console.log(pokemonData)
     pokemonName = pokemonName[0].toUpperCase() + pokemonName.slice(1);
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
-    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonImg, pokemonFirstType, height, pokemonId, weight);
+    document.getElementById('content').innerHTML += pokedexCardTemplate(pokemonName, pokemonImg, pokemonFirstType, height, pokemonId);
     checkType(pokemonFirstType);
     changeTypeColor();
 }
@@ -93,19 +92,18 @@ function changeTypeColor() {// Changes the cards and type bg Color
         if (i === 1 && pokemonData['types'].length > 1 && typeElement1) {// überprüft ob i im zweiten durchgang ist und ob es einen zweiten typen gibt 
             let typeBackground1 = typeBackgrounds[pokemonData['types'][1]['type']['name']];
             typeElement1.classList.add(typeBackground1);
+            
         }
     }
 }
-async function openPokemon(id, pokemonFirstType, pokeImg, pokemonName, height, pokemonId, weight) {//opens up the Pokemon Popup
-    let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`;
-    let response = await fetch(pokemonUrl);
-    let currentPokemonJson = await response.json();
-    pokemonData = currentPokemonJson;
 
+async function openPokemon(id, pokeImg, pokemonName, height, pokemonId) {//opens up the Pokemon Popup
+    let currentPokemon = pokemonJson[id-1];
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
-    let typeBackgroundss = typeBackgrounds[pokemonFirstType.toLowerCase()];
-    let pokemonSecType = pokemonData['types'][1]['type']['name'];
+    let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
+    let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
+    let weight = currentPokemon['weight'];
     
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
@@ -122,18 +120,18 @@ async function openPokemon(id, pokemonFirstType, pokeImg, pokemonName, height, p
             <img onclick="previousPokemon()" src="img/left.png" id="left">
             <h2>${pokemonName}</h2>
             <span style="margin-bottom: 6px;">#ID ${pokemonId}</span>
-            <img onclick="nextPokemon()" src="img/right.png" id="right">
+            <img onclick="nextPokemon(${id})" src="img/right.png" id="right">
         </div>
         <div class="stats-bg">
-            <div class="General">
+            <div id="General-${id}" class="General">
                 <div onclick="openGeneralTypes(${id})" class="general-btn" id="general-btn-${id}">General</div>
                 <div onclick="openGeneralTypes(${id})" class="general-types inactive-btn" id="types-btn-${id}">Types</div>
             </div>
             <div id="infos-${id}" class="infos">
             
                 <div id="Typen-${id}" class="d-none">
-                    <div class="${typeBackgroundss} pokemon-single-type" style="height:40px;">${pokemonFirstType}</div>
-                    <div class="${typeBackgrounds[pokemonSecType]} pokemon-single-type" style="height:40px;">${pokemonSecType}</div>
+                    <div class="${typeBtnBackground} pokemon-single-type" style="height:40px;">${pokeFirstTyp}</div>
+                    
                 </div>
                 
                 <div id="generals-${id}">
@@ -150,36 +148,47 @@ async function openPokemon(id, pokemonFirstType, pokeImg, pokemonName, height, p
                         <b>${(weight / 10).toFixed(1).replace('.', ',') + ' kg'}</b>
                     </div>
                 </div>
-                <div id="abilities-${id}">
+                <div class="abilities" id="abilities-${id}">
                     <span>
                        Abilities
                     </span> <br>
-                    <div class="abilities" id="abilities-${id}">
+                    <div  id="abilities-${id}">
                     </div>
                 </div>
             </div>
-            
             <div class="stats" id="stats-${id}">
                 
             </div>
-        
         </div>
     </div> `;
-    changeSelectedBg(id, pokemonFirstType, typeBackgroundss);
-    loadAbilities(id);
+    changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
+    loadAbilities(currentPokemon,id);
     renderStats(id);
+    renderSecondTypeInGeneral(currentPokemon,id);
+}
+function renderSecondTypeInGeneral(currentPokemon,id){
+    if (currentPokemon['types'].length > 1) {
+        let secType = currentPokemon['types'][1]['type']['name'];
+        document.getElementById(`Typen-${id}`).innerHTML+=`
+        <div class="${typeBackgrounds[secType]} pokemon-single-type" style="height:40px;">${secType}</div>`;
+    }
 }
 function renderStats(id){
     document.getElementById(`stats-${id}`).innerHTML= statsBars();
 }
-function changeSelectedBg(id, pokemonFirstType, typeBackgroundss) {
+function nextPokemon(id){
+    currentPokemon = pokemonJson[id++];
+    openPokemon(currentPokemon);
+    console.log(nextPokemon)
+}
+function changeSelectedBg(id, pokeFirstTyp, typeBtnBackground) {
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
     let typeBg = document.getElementById(`selected-pokename-${id}`);
-    selectedPokemonbg.classList.add(`card-bg-${pokemonFirstType.toLowerCase()}`);
-    typeBg.classList.add(`${typeBackgroundss}`);
+    selectedPokemonbg.classList.add(`card-bg-${pokeFirstTyp.toLowerCase()}`);
+    typeBg.classList.add(`${typeBtnBackground}`);
 }
-async function loadAbilities(id) {
-    let ability = pokemonData['abilities'];
+function loadAbilities(currentPokemon, id) {
+    let ability = currentPokemon['abilities'];
     for (let i = 0; i < ability.length; i++) {
         const abilities = ability[i]['ability']['name'];
         document.getElementById(`abilities-${id}`).innerHTML +=/*html*/`

@@ -107,6 +107,7 @@ header{
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.2);
     font-weight: 700;
+    text-transform: capitalize;
 }
 .d-none{
     display: none;
