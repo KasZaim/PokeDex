@@ -306,15 +306,16 @@ header{
     background-color: #ECECEC;
 }
 .stats{
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    width: 90%;
+    border-radius: 30px;
+    background-color: white;
+    padding: 5px;
 }
 .single-bar{
     display: flex;
-    width: 80%;
-    margin: 7px;
-    gap: 10px;
+    margin: 5px;
+    gap: 12px;
+    text-transform: capitalize;
 }
 .stats-span{
     width: 125px;

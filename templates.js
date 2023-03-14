@@ -14,47 +14,18 @@ function pokedexCardTemplate(pokemonName,pokemonImg,pokemonId){
         </div>
     </div>` 
 }
-function statsBars(){
+function statsBars(stat,barWidth,pokeFirstTyp){
     return/*html*/`
-        <div class="stats">
                 <div class="stats-content">
                     <div class="single-bar">
-                        <span class="stats-span">HP</span>
+                        <span class="stats-span">${stat['stat']['name']}</span>
                         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar" style="width: 0%"></div>
+                            <div class="progress-bar card-bg-${pokeFirstTyp.toLowerCase()}" style="width: ${barWidth}%;">
+                                ${stat['base_stat']}
+                            </div>
                         </div>
                     </div>
-                    <div class="single-bar">
-                        <span class="stats-span">Attack</span>
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar" style="width: 25%"></div>
-                        </div>
-                    </div>
-                <div class="single-bar">
-                    <span class="stats-span">Defense</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 50%"></div>
-                    </div>
                 </div>
-                <div class="single-bar">
-                    <span class="stats-span">Special-Attack</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="single-bar">
-                    <span class="stats-span">Special-Defense</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                </div>
-                <div class="single-bar">
-                    <span class="stats-span">Speed</span>
-                    <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%"></div>
-                    </div>
-                </div>
-                </div>
-            </div>
+                
     `;
 }

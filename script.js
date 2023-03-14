@@ -117,7 +117,7 @@ async function openPokemon(id) {//opens up the Pokemon Popup
             </div>
         </div>
         <div class="selected-pokename" id="selected-pokename-${id}">
-            <img onclick="previousPokemon()" src="img/left.png" id="left">
+            <img onclick="previousPokemon(${id},${pokemonId})" src="img/left.png" id="left">
             <h2>${pokemonName}</h2>
             <span style="margin-bottom: 6px;">#ID ${pokemonId}</span>
             <img onclick="nextPokemon(${id},${pokemonId})" src="img/right.png" id="right">
@@ -156,14 +156,14 @@ async function openPokemon(id) {//opens up the Pokemon Popup
                     </div>
                 </div>
             </div>
-            <div class="stats" id="stats-${id}">
-                
-            </div>
+                <div class="stats"id="stats-${id}">
+
+                </div>
         </div>
     </div> `;
     changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
     loadAbilities(currentPokemon,id);
-    renderStats(id);
+    renderStats(id,currentPokemon,pokeFirstTyp);
     renderSecondTypeInGeneral(currentPokemon,id);
 }
 function renderSecondTypeInGeneral(currentPokemon,id){//renders the Second Type of the Pokemon in Popup
@@ -173,14 +173,23 @@ function renderSecondTypeInGeneral(currentPokemon,id){//renders the Second Type 
         <div class="${typeBackgrounds[secType]} pokemon-single-type" style="height:40px;">${secType}</div>`;
     }
 }
-function renderStats(id){
-    document.getElementById(`stats-${id}`).innerHTML= statsBars();
+function renderStats(id,currentPokemon,pokeFirstTyp){
+    let stats = currentPokemon['stats'];
+    for (let i = 0; i < stats.length; i++) {
+        const stat = stats[i];
+        const barWidth = stat['base_stat']/255 *100;
+        document.getElementById(`stats-${id}`).innerHTML+= statsBars(stat,barWidth,pokeFirstTyp);
+    }
 }
-function nextPokemon(id,pokemonId){//should show up the next Pokemon
-    id++
-    pokemonId++
+function nextPokemon(id,pokemonId){//show up the next Pokemon
+    id++;
+    pokemonId++;
     openPokemon(id,pokemonId);
-    console.log(pokemonId);
+}
+function previousPokemon(id,pokemonId){//show up the previous Pokemon
+    id--;
+    pokemonId--;
+    openPokemon(id,pokemonId);
 }
 function changeSelectedBg(id, pokeFirstTyp, typeBtnBackground) {
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
