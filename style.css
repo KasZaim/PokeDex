@@ -7,6 +7,12 @@ html{
 body{
     margin: 0;
 }
+@font-face {
+    font-family: pokemon;
+    src: url(fonts/Pokemon\ Hollow.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 .popup{
     position: fixed;
     left: 0;
@@ -24,11 +30,35 @@ header{
     top: 0;
     right: 0;
     left: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     height: 120px;
     background-color: rgb(210, 233, 255);
     z-index: 5;
     border-bottom: 1px darkgray solid;
     box-shadow: 4px 4px 7px 7px rgba(0, 0, 0, 0.1);
+    font-family: 'pokemon';
+}
+.header-left{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+    height: 100%;
+    font-size: 70px;
+}
+.header-left img{
+    height: 80%;
+}
+#input{
+    height: 45px;
+    width: 240px;
+    font-family: 'Courier New', Courier, monospace;
+    border: 1px solid lightblue;
+    border-radius: 30px;
+    padding: 12px;
+    outline: none;
 }
 .content{
     display: flex;

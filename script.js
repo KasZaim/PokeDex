@@ -93,7 +93,7 @@ function changeTypeColor() {// Changes the cards and type bg Color
     }
 }
 
-async function openPokemon(id) {//opens up the Pokemon Popup
+function openPokemon(id) {//opens up the Pokemon Popup
     let currentPokemon = pokemonJson[id-1];
     let pokeImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = currentPokemon['name'];
@@ -107,60 +107,8 @@ async function openPokemon(id) {//opens up the Pokemon Popup
     
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
-    content.innerHTML =/*html*/`
-    <div class="selected-pokemon">
-        <img src="img/close.png" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
-        <div class="selected-poke-bg" id="selected-poke-bg-${id}">
-            <div class="pokemon-img-container" >
-                <img src="img/pokeball1.png" class="single-card-bg">
-                <img src="${pokeImg}" class="pokemon-img" style="transform: scale(1);">
-            </div>
-        </div>
-        <div class="selected-pokename" id="selected-pokename-${id}">
-            <img onclick="previousPokemon(${id},${pokemonId})" src="img/left.png" id="left">
-            <h2>${pokemonName}</h2>
-            <span style="margin-bottom: 6px;">#ID ${pokemonId}</span>
-            <img onclick="nextPokemon(${id},${pokemonId})" src="img/right.png" id="right">
-        </div>
-        <div class="stats-bg">
-            <div id="General-${id}" class="General">
-                <div onclick="openGeneralTypes(${id})" class="general-btn" id="general-btn-${id}">General</div>
-                <div onclick="openGeneralTypes(${id})" class="general-types inactive-btn" id="types-btn-${id}">Types</div>
-            </div>
-            <div id="infos-${id}" class="infos">
-            
-                <div id="Typen-${id}" class="d-none">
-                    <div class="${typeBtnBackground} pokemon-single-type" style="height:40px;">${pokeFirstTyp}</div>
-                    
-                </div>
-                
-                <div id="generals-${id}">
-                    <span>
-                        Height
-                    </span> <br>
-                    <div>
-                        <b>${(height / 10).toFixed(1).replace('.', ',') + ' m'}</b>
-                    </div>
-                    <span>
-                        Weight
-                    </span> <br>
-                    <div>
-                        <b>${(weight / 10).toFixed(1).replace('.', ',') + ' kg'}</b>
-                    </div>
-                </div>
-                <div class="abilities" id="abilities-${id}">
-                    <span>
-                       Abilities
-                    </span> <br>
-                    <div  id="abilities-${id}">
-                    </div>
-                </div>
-            </div>
-                <div class="stats"id="stats-${id}">
-
-                </div>
-        </div>
-    </div> `;
+    content.innerHTML = PokemonPopupTemplate(weight,height,pokemonId,pokemonName,pokeImg,id,typeBtnBackground,pokeFirstTyp);
+    
     changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
     loadAbilities(currentPokemon,id);
     renderStats(id,currentPokemon,pokeFirstTyp);
@@ -217,6 +165,9 @@ function openGeneralTypes(id) {
 function closePopup() {
     document.getElementById('popup').classList.add('d-none');
     document.getElementById('content').style.filter = 'blur(0px)';
+}
+function doNotClose(event){
+    event.stopPropagation();
 }
 function checkBottom() {//load more 20 Pokemon
     let documentHeight = document.body.scrollHeight;
