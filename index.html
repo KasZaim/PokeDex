@@ -21,14 +21,14 @@
     <header>
         <div class="header-left">
             <img src="img/pokeball2.png">
-            <span>Pokemon</span>
+            <span style="margin-bottom: 31px;">Pokemon</span>
         </div>
-        <input type="text" id="input" placeholder="Search Pokemon ...">
+        <input type="text" onchange="findPokemon()" id="input" placeholder="Search Pokemon ...">
     </header>
     <div class="content" id="content">
 
        
     </div>
-    
+    <div class="load-more"> <div onclick="checkBottom()" class="load-more-btn">Load More</div></div>
 </body>
 </html>

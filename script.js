@@ -1,7 +1,11 @@
+let url = 'https://pokeapi.co/api/v2/pokemon?limit=1118';
+let all_pokemon = [];
 let pokemonData;
 let offset = 0;
 let PokemonNames = [];
 let pokemonJson = [];
+let isLoading;
+let isSearching;
 let typeBackgrounds = {
     grass: 'type-bg-grass',
     fire: 'type-bg-fire',
@@ -21,14 +25,15 @@ let typeBackgrounds = {
     dragon: 'type-bg-dragon',
     dark: 'type-bg-dark'
 };
+
 async function loadPokemonAPI() {//loads the list from the PokemonAPI
-    let url = `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${offset}`;
+    isLoading = true;
+    deactivateSearch();
+    let url = `https://pokeapi.co/api/v2/pokemon?limit=2000&offset=${offset}`;
     let response = await fetch(url);
     currentPokemon = await response.json();
     renderPokemonList();
     offset += 20;
-
-
 }
 function renderPokemonList() {//loads the Names of the Pokemon and push them in the Array
     let pokeNames = currentPokemon['results'];
@@ -36,17 +41,19 @@ function renderPokemonList() {//loads the Names of the Pokemon and push them in 
         const element = pokeNames[i];
         PokemonNames.push(element['name']);
     }
-    renderPokemonJson();
-
+    renderPokemonJson(PokemonNames);
 }
-async function renderPokemonJson() {//loads the single Json for each Pokemon
-    for (let i = 0; i < PokemonNames.length; i++) {
+async function renderPokemonJson(PokemonNames) {//loads the single Json for each Pokemon with the Names 
+    for (let i = 0; i < 20; i++) {{
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
         pokemonData = await response.json();
         pokemonJson.push(pokemonData);
         showContent();
     }
+}
+    isLoading = false;
+    activateSearch();
 }
 function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
@@ -57,7 +64,6 @@ function showContent() {//render the Pokemons Card,IMG, Name
     checkType();
     changeTypeColor();
 }
-
 function checkType() {//adds the Type category
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
@@ -73,7 +79,6 @@ function checkType() {//adds the Type category
     }
 }
 function changeTypeColor() {// Changes the cards and type bg Color
-
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
         let type = pokemonData['types'][i]['type']['name'];
@@ -88,7 +93,6 @@ function changeTypeColor() {// Changes the cards and type bg Color
         if (i === 1 && pokemonData['types'].length > 1 && typeElement1) {// überprüft ob i im zweiten durchgang ist und ob es einen zweiten typen gibt 
             let typeBackground1 = typeBackgrounds[pokemonData['types'][1]['type']['name']];
             typeElement1.classList.add(typeBackground1);
-            
         }
     }
 }
@@ -161,7 +165,22 @@ function openGeneralTypes(id) {
     document.getElementById(`general-btn-${id}`).classList.toggle('inactive-btn');
     document.getElementById(`types-btn-${id}`).classList.toggle('inactive-btn');
 }
-
+async function findPokemon() {
+    isSearching = true;
+    let input = document.getElementById('input').value.toLowerCase();
+    let content = document.getElementById('content');
+    let results = PokemonNames.filter(pokemonName => pokemonName.toLowerCase().includes(input));
+    content.innerHTML='';
+    offset = 0;
+    renderPokemonJson(results);
+    console.log(results)
+  }
+  function deactivateSearch(){
+    document.getElementById('input').disabled = true;
+  }
+  function activateSearch(){
+    document.getElementById('input').disabled = false;
+  }
 function closePopup() {
     document.getElementById('popup').classList.add('d-none');
     document.getElementById('content').style.filter = 'blur(0px)';
@@ -169,17 +188,11 @@ function closePopup() {
 function doNotClose(event){
     event.stopPropagation();
 }
-function checkBottom() {//load more 20 Pokemon
-    let documentHeight = document.body.scrollHeight;
-    let currentScroll = window.scrollY + window.innerHeight;
-    let modifier = 1;
-    if (currentScroll + modifier > documentHeight) {
+function checkBottom(){
+    if (!isLoading || isSearching) {
         PokemonNames = [];
         loadPokemonAPI()
     }
 }
-window.addEventListener('scroll', checkBottom);
-
-
 
 

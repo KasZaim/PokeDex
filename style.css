@@ -13,6 +13,12 @@ body{
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: Pokemon;
+    src: url(fonts/Pokemon\ Solid.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 .popup{
     position: fixed;
     left: 0;
@@ -34,7 +40,7 @@ header{
     justify-content: space-around;
     align-items: center;
     height: 120px;
-    background-color: rgb(210, 233, 255);
+    background-color: #D6FFC2;
     z-index: 5;
     border-bottom: 1px darkgray solid;
     box-shadow: 4px 4px 7px 7px rgba(0, 0, 0, 0.1);
@@ -65,6 +71,28 @@ header{
     justify-content: center;
     flex-wrap: wrap;
     padding-top: 10px;
+}
+.load-more{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+    
+}
+.load-more-btn{
+    width: 150px;
+    padding: 10px;
+    background-color:#D6FFC2 ;
+    text-align: center;
+    border: 1px solid darkgreen;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 225ms ease-in-out;
+}
+.load-more-btn:hover{
+    transform: scale(1.1);
 }
 .single-pokemon{
     display: flex;
