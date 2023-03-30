@@ -171,9 +171,11 @@ async function findPokemon() {
     let content = document.getElementById('content');
     let results = PokemonNames.filter(pokemonName => pokemonName.toLowerCase().includes(input));
     content.innerHTML='';
-    offset = 0;
     renderPokemonJson(results);
     deactivateLoadMoreBtn()
+    if (input.length < 1) {
+        document.getElementById('load-more').classList.remove('d-none');
+    }
   }
   function deactivateSearch(){
     document.getElementById('input').disabled = true;

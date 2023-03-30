@@ -48,11 +48,12 @@ header{
 }
 .header-left{
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     align-items: center;
     width: 400px;
     height: 100%;
     font-size: 70px;
+    margin-right: 30px;
 }
 .header-left img{
     height: 80%;
@@ -402,4 +403,68 @@ header{
 }
 .abilities{
     text-transform: capitalize;
+}
+@media (max-width:650px ) {
+    .header-left{
+        height: 80%;
+        font-size: 50px;
+    }
+    #input{
+        font-size:12px;
+    }
+    .selected-pokemon{
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        padding: 0;
+        height: unset;
+        width: unset;
+    }
+    #close-popup{
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    }
+    .stats-span {
+        font-size: 13px;
+    }
+}
+
+@media (max-width:500px ){
+    .header-left{
+        height: 60%;
+        font-size: 40px;
+        margin-right: 0;
+    }
+    #headline{
+        margin-bottom: 20px !important;
+    }
+}
+@media (max-width:400px ){
+    .header-left{
+        height: 40%;
+        font-size: 24px;
+        margin-right: 0;
+    }
+    #headline{
+        margin-bottom: 12px !important;
+    }
+    .single-pokemon{
+        min-width: 333px;
+    }
+    .headline{
+        font-size: 30px;
+    }
+    .id-nr{
+        font-size: 22px;
+    }
+    .single-card-bg{
+        height: 320px;
+    }
+    .pokemon-img{
+        height: 90%;
+    }
+    
 }

@@ -32,7 +32,7 @@ function statsBars(stat,barWidth,pokeFirstTyp){
 function PokemonPopupTemplate(weight,height,pokemonId,pokemonName,pokeImg,id,typeBtnBackground,pokeFirstTyp){
     return/*html*/`
     <div class="selected-pokemon">
-        <img src="img/close.png" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
+        <img src="img/close.png" id="close-popup" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
         <div class="selected-poke-bg" id="selected-poke-bg-${id}">
             <div class="pokemon-img-container" >
                 <img src="img/pokeball1.png" class="single-card-bg">
