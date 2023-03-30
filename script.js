@@ -44,15 +44,15 @@ function renderPokemonList() {//loads the Names of the Pokemon and push them in 
     renderPokemonJson(PokemonNames);
 }
 async function renderPokemonJson(PokemonNames) {//loads the single Json for each Pokemon with the Names 
-    for (let i = 0; i < 20; i++) {{
+    for (let i = 0; i < 20; i++) {
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
         pokemonData = await response.json();
         pokemonJson.push(pokemonData);
         showContent();
-    }
 }
     isLoading = false;
+    isSearching = false;
     activateSearch();
 }
 function showContent() {//render the Pokemons Card,IMG, Name
@@ -173,7 +173,7 @@ async function findPokemon() {
     content.innerHTML='';
     offset = 0;
     renderPokemonJson(results);
-    console.log(results)
+    deactivateLoadMoreBtn()
   }
   function deactivateSearch(){
     document.getElementById('input').disabled = true;
@@ -192,7 +192,17 @@ function checkBottom(){
     if (!isLoading || isSearching) {
         PokemonNames = [];
         loadPokemonAPI()
-    }
+    }    
 }
+function deactivateLoadMoreBtn() {
+  const loadMoreDiv = document.getElementById('load-more');
+  if (isSearching = true) {
+    loadMoreDiv.classList.add('d-none');
+  }else{
+    loadMoreDiv.classList.add('d-flex');
+  }
+}
+  
+  
 
 

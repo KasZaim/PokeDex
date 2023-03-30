@@ -79,6 +79,9 @@ header{
     margin: 16px;
     
 }
+.d-flex{
+    display: flex !important;
+}
 .load-more-btn{
     width: 150px;
     padding: 10px;
@@ -168,7 +171,7 @@ header{
     text-transform: capitalize;
 }
 .d-none{
-    display: none;
+    display: none !important;
 }
 .type-bg-grass{
     background-color: #94E5A9 !important;
