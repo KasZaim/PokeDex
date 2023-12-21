@@ -28,6 +28,7 @@ let typeBackgrounds = {
 
 async function loadPokemonAPI() {//loads the list from the PokemonAPI
     isLoading = true;
+    showLoader();
     deactivateSearch();
     let url = `https://pokeapi.co/api/v2/pokemon?limit=2000&offset=${offset}`;
     let response = await fetch(url);
@@ -35,7 +36,9 @@ async function loadPokemonAPI() {//loads the list from the PokemonAPI
     renderPokemonList();
     offset += 20;
 }
+
 function renderPokemonList() {//loads the Names of the Pokemon and push them in the Array
+    
     let pokeNames = currentPokemon['results'];
     for (let i = 0; i < pokeNames.length; i++) {
         const element = pokeNames[i];
@@ -43,18 +46,26 @@ function renderPokemonList() {//loads the Names of the Pokemon and push them in 
     }
     renderPokemonJson(PokemonNames);
 }
+
 async function renderPokemonJson(PokemonNames) {//loads the single Json for each Pokemon with the Names 
     for (let i = 0; i < 20; i++) {
         let pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${PokemonNames[i]}`;
         let response = await fetch(pokemonUrl);
         pokemonData = await response.json();
-        pokemonJson.push(pokemonData);
+        pokemonJson.push(pokemonData); 
         showContent();
-}
-    isLoading = false;
+    }
+    
+    document.getElementById('content').innerHTML += '<button id="load-more" onclick="loadMorePokemon()" class="load-more-btn">Load More</button>'
+    setTimeout(() => {
+        isLoading = false;
+        showLoader();
+    }, 1000);
+
     isSearching = false;
     activateSearch();
 }
+
 function showContent() {//render the Pokemons Card,IMG, Name
     let pokemonImg = pokemonData['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemonData['name'];
@@ -64,6 +75,7 @@ function showContent() {//render the Pokemons Card,IMG, Name
     checkType();
     changeTypeColor();
 }
+
 function checkType() {//adds the Type category
     let pokemonFirstType = pokemonData['types'][0]['type']['name'];
     pokemonFirstType = pokemonFirstType[0].toUpperCase() + pokemonFirstType.slice(1);
@@ -72,7 +84,6 @@ function checkType() {//adds the Type category
         pokemonSecType = pokemonSecType[0].toUpperCase() + pokemonSecType.slice(1);
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
         document.getElementById(`second-type-${pokemonData['id']}`).innerHTML = `${pokemonSecType}`;
-
     } else {
         document.getElementById(`first-type-${pokemonData['id']}`).innerHTML = `${pokemonFirstType}`;
         document.getElementById(`second-type-${pokemonData['id']}`).classList.add('d-none');
@@ -85,7 +96,6 @@ function changeTypeColor() {// Changes the cards and type bg Color
         let typeElement = document.getElementById(`first-type-${pokemonData['id']}`);
         let typeElement1 = document.getElementById(`second-type-${pokemonData['id']}`);
         let typeBackground = typeBackgrounds[type];
-
         if (i === 0 && typeElement) {//checks if the typeElement exists and adds the bg Color 
             typeElement.classList.add(typeBackground);
             card.classList.add(`card-bg-${type.toLowerCase()}`);
@@ -98,7 +108,7 @@ function changeTypeColor() {// Changes the cards and type bg Color
 }
 
 function openPokemon(id) {//opens up the Pokemon Popup
-    let currentPokemon = pokemonJson[id-1];
+    let currentPokemon = pokemonJson[id - 1];
     let pokeImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = currentPokemon['name'];
     let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
@@ -108,40 +118,40 @@ function openPokemon(id) {//opens up the Pokemon Popup
     let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
     let weight = currentPokemon['weight'];
     let height = currentPokemon['height'];
-    
+
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
-    content.innerHTML = PokemonPopupTemplate(weight,height,pokemonId,pokemonName,pokeImg,id,typeBtnBackground,pokeFirstTyp);
-    
+    content.innerHTML = PokemonPopupTemplate(weight, height, pokemonId, pokemonName, pokeImg, id, typeBtnBackground, pokeFirstTyp);
+
     changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
-    loadAbilities(currentPokemon,id);
-    renderStats(id,currentPokemon,pokeFirstTyp);
-    renderSecondTypeInGeneral(currentPokemon,id);
+    loadAbilities(currentPokemon, id);
+    renderStats(id, currentPokemon, pokeFirstTyp);
+    renderSecondTypeInGeneral(currentPokemon, id);
 }
-function renderSecondTypeInGeneral(currentPokemon,id){//renders the Second Type of the Pokemon in Popup
+function renderSecondTypeInGeneral(currentPokemon, id) {//renders the Second Type of the Pokemon in Popup
     if (currentPokemon['types'].length > 1) {
         let secType = currentPokemon['types'][1]['type']['name'];
-        document.getElementById(`Typen-${id}`).innerHTML+=`
+        document.getElementById(`Typen-${id}`).innerHTML += `
         <div class="${typeBackgrounds[secType]} pokemon-single-type" style="height:40px;">${secType}</div>`;
     }
 }
-function renderStats(id,currentPokemon,pokeFirstTyp){
+function renderStats(id, currentPokemon, pokeFirstTyp) {
     let stats = currentPokemon['stats'];
     for (let i = 0; i < stats.length; i++) {
         const stat = stats[i];
-        const barWidth = stat['base_stat']/255 *100;
-        document.getElementById(`stats-${id}`).innerHTML+= statsBars(stat,barWidth,pokeFirstTyp);
+        const barWidth = stat['base_stat'] / 255 * 100;
+        document.getElementById(`stats-${id}`).innerHTML += statsBars(stat, barWidth, pokeFirstTyp);
     }
 }
-function nextPokemon(id,pokemonId){//show up the next Pokemon
+function nextPokemon(id, pokemonId) {//show up the next Pokemon
     id++;
     pokemonId++;
-    openPokemon(id,pokemonId);
+    openPokemon(id, pokemonId);
 }
-function previousPokemon(id,pokemonId){//show up the previous Pokemon
+function previousPokemon(id, pokemonId) {//show up the previous Pokemon
     id--;
     pokemonId--;
-    openPokemon(id,pokemonId);
+    openPokemon(id, pokemonId);
 }
 function changeSelectedBg(id, pokeFirstTyp, typeBtnBackground) {
     let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
@@ -170,41 +180,54 @@ async function findPokemon() {
     let input = document.getElementById('input').value.toLowerCase();
     let content = document.getElementById('content');
     let results = PokemonNames.filter(pokemonName => pokemonName.toLowerCase().includes(input));
-    content.innerHTML='';
+    content.innerHTML = '';
     renderPokemonJson(results);
     deactivateLoadMoreBtn()
     if (input.length < 1) {
         document.getElementById('load-more').classList.remove('d-none');
     }
-  }
-  function deactivateSearch(){
+}
+function deactivateSearch() {
     document.getElementById('input').disabled = true;
-  }
-  function activateSearch(){
+}
+function activateSearch() {
     document.getElementById('input').disabled = false;
-  }
+}
 function closePopup() {
     document.getElementById('popup').classList.add('d-none');
     document.getElementById('content').style.filter = 'blur(0px)';
 }
-function doNotClose(event){
+function doNotClose(event) {
     event.stopPropagation();
 }
-function checkBottom(){
+function loadMorePokemon() {
     if (!isLoading || isSearching) {
         PokemonNames = [];
         loadPokemonAPI()
-    }    
+    }
 }
 function deactivateLoadMoreBtn() {
-  const loadMoreDiv = document.getElementById('load-more');
-  if (isSearching = true) {
-    loadMoreDiv.classList.add('d-none');
-  }else{
-    loadMoreDiv.classList.add('d-flex');
-  }
+    const loadMoreDiv = document.getElementById('load-more');
+    if (isSearching = true) {
+        loadMoreDiv.classList.add('d-none');
+    } else {
+        loadMoreDiv.classList.add('d-flex');
+    }
 }
-  
-  
+
+function reloadPage() {
+    location.reload();
+}
+
+function showLoader() {
+    let loader = document.getElementById('loader');
+    if (isLoading) {
+        loader.classList.remove('d-none');
+    }
+    if (!isLoading) {
+        loader.classList.add('d-none');
+    }
+}
+
 
 

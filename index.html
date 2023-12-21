@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
     <script src="templates.js"></script>
-    
+    <link rel="icon" href="img/pokeball1.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
@@ -20,15 +20,16 @@
     </div>
     <header>
         <div class="header-left">
-            <img src="img/pokeball2.png">
-            <span id="headline" style="margin-bottom: 31px;">Pokemon</span>
+            <img src="img/pikachu.png" onclick="reloadPage()">
+            <span id="headline" style="margin-bottom: 31px;">PokeDex</span>
         </div>
         <input type="text" onchange="findPokemon()" id="input" placeholder="Search Pokemon ...">
     </header>
     <div class="content" id="content">
-
-       
+        <!--Here will the single pokemons be displayed -->
     </div>
-    <div id="load-more" class="load-more"> <div onclick="checkBottom()" class="load-more-btn">Load More</div></div>
+    <div>
+        <img class="loader-img d-none" id="loader" src="img/pokeball2.png">
+    </div>
 </body>
 </html>
