@@ -22,6 +22,55 @@ body{
     font-weight: normal;
     font-style: normal;
 }
+@keyframes slideUp {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: -100vh;
+    }
+}
+.animate-up {
+    animation: slideUp 1s ease-in-out forwards;
+}
+.start-screen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    z-index: 12;
+    background-image: url('img/pokeballs_grey.png');
+    background-color: white;
+    background-size: 200px 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-150px);
+    }
+}
+
+@keyframes rollOut {
+    0% {
+        transform: translateX(0) rotate(0);
+    }
+    100% {
+        transform: translateX(100vw)  rotate(360deg);
+    }
+}
+
+.startscreen-pokeball {
+    height: 50%;
+    animation: bounce 0.5s ease-in-out 2, rollOut 1s ease-in-out 1s forwards;
+    will-change: transform;
+}
 .popup{
     position: fixed;
     left: 0;
@@ -33,6 +82,12 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.popup-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }
 header{
     position: sticky;
@@ -115,7 +170,7 @@ header{
         transform: rotate(0deg);
     }
     to{
-        transform: rotate(360deg);
+        transform: rotate(360deg) ;
     }
   }
 .d-flex{

@@ -6,6 +6,9 @@ let PokemonNames = [];
 let pokemonJson = [];
 let isLoading;
 let isSearching;
+let currentPokemonJSON;
+let prevId;
+let nextId;
 let typeBackgrounds = {
     grass: 'type-bg-grass',
     fire: 'type-bg-fire',
@@ -27,6 +30,7 @@ let typeBackgrounds = {
 };
 
 async function loadPokemonAPI() {//loads the list from the PokemonAPI
+    showStartScreen();
     isLoading = true;
     showLoader();
     deactivateSearch();
@@ -38,7 +42,6 @@ async function loadPokemonAPI() {//loads the list from the PokemonAPI
 }
 
 function renderPokemonList() {//loads the Names of the Pokemon and push them in the Array
-    
     let pokeNames = currentPokemon['results'];
     for (let i = 0; i < pokeNames.length; i++) {
         const element = pokeNames[i];
@@ -89,6 +92,7 @@ function checkType() {//adds the Type category
         document.getElementById(`second-type-${pokemonData['id']}`).classList.add('d-none');
     }
 }
+
 function changeTypeColor() {// Changes the cards and type bg Color
     for (let i = 0; i < pokemonData['types'].length; i++) {
         let card = document.getElementById(`single-pokemon-${pokemonData['id']}`);
@@ -107,58 +111,67 @@ function changeTypeColor() {// Changes the cards and type bg Color
     }
 }
 
-function openPokemon(id) {//opens up the Pokemon Popup
-    let currentPokemon = pokemonJson[id - 1];
-    let pokeImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    let pokemonName = currentPokemon['name'];
-    let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
-    let pokemonId = String(currentPokemon.id).padStart(4, '0');
+// function openPokemon(id) {//opens up the Pokemon Popup
+//     let currentPokemon = pokemonJson[id - 1];
+//     let pokeImg = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+//     let pokemonName = currentPokemon['name'];
+//     let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
+//     let pokemonId = String(currentPokemon.id).padStart(4, '0');
+//     let popup = document.getElementById('popup');
+//     let content = document.getElementById('popup-content');
+//     let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
+//     let weight = currentPokemon['weight'];
+//     let height = currentPokemon['height'];
+
+//     document.getElementById('content').style.filter = 'blur(5px)';
+//     popup.classList.remove('d-none');
+//     content.innerHTML = PokemonPopupTemplate(weight, height, pokemonId, pokemonName, pokeImg, id, typeBtnBackground, pokeFirstTyp);
+
+//     changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
+//     loadAbilities(currentPokemon, id);
+//     renderStats(id, currentPokemon, pokeFirstTyp);
+//     renderSecondTypeInGeneral(currentPokemon, id);
+// }
+
+function openPokemon(id) {
+    let { prevId, nextId } = calculateIds(id);
+    
     let popup = document.getElementById('popup');
     let content = document.getElementById('popup-content');
+    let currentPokemon = pokemonJson[id - 1];
+    let pokeFirstTyp = currentPokemon['types'][0]['type']['name'];
     let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
-    let weight = currentPokemon['weight'];
-    let height = currentPokemon['height'];
 
     document.getElementById('content').style.filter = 'blur(5px)';
     popup.classList.remove('d-none');
-    content.innerHTML = PokemonPopupTemplate(weight, height, pokemonId, pokemonName, pokeImg, id, typeBtnBackground, pokeFirstTyp);
 
-    changeSelectedBg(id, pokeFirstTyp, typeBtnBackground);
+    content.innerHTML = `
+        ${generatePokemonContent(prevId)}
+        ${generatePokemonContent(id)}
+        ${generatePokemonContent(nextId)}
+    `;
+
+    changeSelectedBg(id);
     loadAbilities(currentPokemon, id);
     renderStats(id, currentPokemon, pokeFirstTyp);
     renderSecondTypeInGeneral(currentPokemon, id);
 }
-function renderSecondTypeInGeneral(currentPokemon, id) {//renders the Second Type of the Pokemon in Popup
-    if (currentPokemon['types'].length > 1) {
-        let secType = currentPokemon['types'][1]['type']['name'];
-        document.getElementById(`Typen-${id}`).innerHTML += `
-        <div class="${typeBackgrounds[secType]} pokemon-single-type" style="height:40px;">${secType}</div>`;
+function changeSelectedBg(id) {
+    for (let i = id - 2; i < id+1; i++){
+        if (i === -1) {
+            document.getElementById(`selected-pokemon-${pokemonJson.length}`).classList.add('d-none');
+            i=0;
+        }
+        setVariablesForBG(i);
+        blurBackgroundCards(i,selectedPokemn,id)
+        console.log(currentPokemon,i)
+        let pokeFirstTyp = currentPoke['types'][0]['type']['name'];
+        let typeBtnBackground = typeBackgrounds[pokeFirstTyp.toLowerCase()];
+        MainPokemonbg.classList.add(`card-bg-${pokeFirstTyp.toLowerCase()}`);
+        MaintypeBg.classList.add(`${typeBtnBackground}`);
     }
 }
-function renderStats(id, currentPokemon, pokeFirstTyp) {
-    let stats = currentPokemon['stats'];
-    for (let i = 0; i < stats.length; i++) {
-        const stat = stats[i];
-        const barWidth = stat['base_stat'] / 255 * 100;
-        document.getElementById(`stats-${id}`).innerHTML += statsBars(stat, barWidth, pokeFirstTyp);
-    }
-}
-function nextPokemon(id, pokemonId) {//show up the next Pokemon
-    id++;
-    pokemonId++;
-    openPokemon(id, pokemonId);
-}
-function previousPokemon(id, pokemonId) {//show up the previous Pokemon
-    id--;
-    pokemonId--;
-    openPokemon(id, pokemonId);
-}
-function changeSelectedBg(id, pokeFirstTyp, typeBtnBackground) {
-    let selectedPokemonbg = document.getElementById(`selected-poke-bg-${id}`)
-    let typeBg = document.getElementById(`selected-pokename-${id}`);
-    selectedPokemonbg.classList.add(`card-bg-${pokeFirstTyp.toLowerCase()}`);
-    typeBg.classList.add(`${typeBtnBackground}`);
-}
+
 function loadAbilities(currentPokemon, id) {
     let ability = currentPokemon['abilities'];
     for (let i = 0; i < ability.length; i++) {
@@ -168,6 +181,99 @@ function loadAbilities(currentPokemon, id) {
         `;
     }
 }
+
+function blurBackgroundCards(i,selectedPokemn,id){
+    if (i === id - 2 || i === id) { // Überprüft, ob es das erste oder dritte Element ist
+        if (selectedPokemn) selectedPokemn.style.filter = 'blur(5px)'; 
+    } else {
+        if (selectedPokemn) selectedPokemn.style.filter = 'none';
+    }
+    if (i == pokemonJson.length) {
+        document.getElementById(`selected-pokemon-${pokemonJson.length}`).style.filter='none';
+    }
+}
+
+function setVariablesForBG(i){
+    if (i === pokemonJson.length) {
+        // Spezielle Anpassungen, wenn i den Wert pokemonJson.length erreicht
+        document.getElementById(`selected-pokemon-${1}`).classList.add('d-none');
+        currentPoke = pokemonJson[i - 1];
+        MainPokemonbg = document.getElementById(`selected-poke-bg-${i}`);
+        MaintypeBg = document.getElementById(`selected-pokename-${i}`);
+        selectedPokemn = document.getElementById(`selected-pokemon-${i}`);
+    } else {
+        // Normaler Fall
+        currentPoke = pokemonJson[i];
+        MainPokemonbg = document.getElementById(`selected-poke-bg-${i + 1}`);
+        MaintypeBg = document.getElementById(`selected-pokename-${i + 1}`);
+        selectedPokemn = document.getElementById(`selected-pokemon-${i+1}`);
+    }
+}
+
+function calculateIds(currentId) { // Berechnet die vorherige und nächste Pokémon-ID
+        prevId = currentId - 1;
+        nextId = currentId + 1;
+        console.log(prevId,nextId)
+        // Wenn das erste Pokémon angezeigt wird, setze das vorherige auf das letzte Pokémon
+        if (prevId < 1) prevId = pokemonJson.length;
+        // Wenn das letzte Pokémon angezeigt wird, setze das nächste auf das erste Pokémon
+        if (nextId > pokemonJson.length) nextId = 1;
+
+        return { prevId, nextId };
+    }
+
+// Erzeugt den Inhalt für ein Pokémon
+function generatePokemonContent(pokemonId) {
+    let pokemon = pokemonJson[pokemonId - 1];
+    let pokemonNumber = String(pokemonId).padStart(4, '0');
+    currentPokemonJSON = {
+        pokeImg: pokemon['sprites']['other']['official-artwork']['front_default'],
+        pokemonName: pokemon['name'],
+        pokeFirstTyp: pokemon['types'][0]['type']['name'],
+        formattedId: String(pokemon.id).padStart(4, '0'),
+        typeBtnBackground: typeBackgrounds[pokemon['types'][0]['type']['name'].toLowerCase()],
+        weight: pokemon['weight'],
+        height: pokemon['height'],
+        id: pokemonId,
+        pokemonid: pokemonNumber
+    };
+
+    return PokemonPopupTemplate(currentPokemonJSON);
+}
+
+function renderSecondTypeInGeneral(currentPokemon, id) {//renders the Second Type of the Pokemon in Popup
+    if (currentPokemon['types'].length > 1) {
+        let secType = currentPokemon['types'][1]['type']['name'];
+        document.getElementById(`Typen-${id}`).innerHTML += `
+        <div class="${typeBackgrounds[secType]} pokemon-single-type" style="height:40px;">${secType}</div>`;
+    }
+}
+
+function renderStats(id, currentPokemon, pokeFirstTyp) {
+    let stats = currentPokemon['stats'];
+    for (let i = 0; i < stats.length; i++) {
+        const stat = stats[i];
+        const barWidth = stat['base_stat'] / 255 * 100;
+        document.getElementById(`stats-${id}`).innerHTML += statsBars(stat, barWidth, pokeFirstTyp);
+    }
+}
+
+function nextPokemon(id, pokemonId) {//show up the next Pokemon
+    id++;
+    pokemonId++;
+    openPokemon(id, pokemonId);
+}
+
+function previousPokemon(id, pokemonId) {//show up the previous Pokemon
+    id--;
+    pokemonId--;
+    openPokemon(id, pokemonId);
+}
+
+
+
+
+
 function openGeneralTypes(id) {
     document.getElementById(`generals-${id}`).classList.toggle('d-none');
     document.getElementById(`abilities-${id}`).classList.toggle('d-none');
@@ -175,6 +281,7 @@ function openGeneralTypes(id) {
     document.getElementById(`general-btn-${id}`).classList.toggle('inactive-btn');
     document.getElementById(`types-btn-${id}`).classList.toggle('inactive-btn');
 }
+
 async function findPokemon() {
     isSearching = true;
     let input = document.getElementById('input').value.toLowerCase();
@@ -187,25 +294,31 @@ async function findPokemon() {
         document.getElementById('load-more').classList.remove('d-none');
     }
 }
+
 function deactivateSearch() {
     document.getElementById('input').disabled = true;
 }
+
 function activateSearch() {
     document.getElementById('input').disabled = false;
 }
+
 function closePopup() {
     document.getElementById('popup').classList.add('d-none');
     document.getElementById('content').style.filter = 'blur(0px)';
 }
+
 function doNotClose(event) {
     event.stopPropagation();
 }
+
 function loadMorePokemon() {
     if (!isLoading || isSearching) {
         PokemonNames = [];
         loadPokemonAPI()
     }
 }
+
 function deactivateLoadMoreBtn() {
     const loadMoreDiv = document.getElementById('load-more');
     if (isSearching = true) {
@@ -229,5 +342,11 @@ function showLoader() {
     }
 }
 
+function showStartScreen(){
+    let startScreen = document.getElementById('start-screen');
+    setTimeout(() => {
+        startScreen.classList.add('animate-up');
+    }, 1500);
+}
 
 
