@@ -20,7 +20,7 @@ function statsBars(stat,barWidth,pokeFirstTyp){
                     <div class="single-bar">
                         <span class="stats-span">${stat['stat']['name']}</span>
                         <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar card-bg-${pokeFirstTyp.toLowerCase()}" style="width: ${barWidth}%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated card-bg-${pokeFirstTyp.toLowerCase()}" style="width: ${barWidth}%;">
                                 ${stat['base_stat']}
                             </div>
                         </div>
@@ -31,18 +31,18 @@ function statsBars(stat,barWidth,pokeFirstTyp){
 }
 function PokemonPopupTemplate(data){
     return/*html*/`
-    <div class="selected-pokemon" id="selected-pokemon-${data.id}">
         <img src="img/close.png" id="close-popup" alt="close-popup" onclick="closePopup()" style="cursor:pointer;">
+    <div class="selected-pokemon" id="selected-pokemon-${data.id}">
         <div class="selected-poke-bg" id="selected-poke-bg-${data.id}">
-            <div class="pokemon-img-container" >
+            <div class="pokemon-img-container" style="margin-bottom: 30px">
                 <img src="img/pokeball1.png" class="single-card-bg">
                 <img src="${data.pokeImg}" class="pokemon-img" style="transform: scale(1);">
             </div>
         </div>
         <div class="selected-pokename" id="selected-pokename-${data.id}">
             <img onclick="previousPokemon(${data.id},${data.pokemonid})" src="img/left.png" id="left">
-            <h2>${data.pokemonName}</h2>
-            <span style="margin-bottom: 6px;">#ID ${data.pokemonid}</span>
+            <span class="poke-name">${data.pokemonName}</span>
+            <span>#ID ${data.pokemonid}</span>
             <img onclick="nextPokemon(${data.id},${data.pokemonid})" src="img/right.png" id="right">
         </div>
         <div class="stats-bg">
@@ -52,7 +52,7 @@ function PokemonPopupTemplate(data){
             </div>
             <div id="infos-${data.id}" class="infos">
             
-                <div id="Typen-${data.id}" class="d-none">
+                <div id="Typen-${data.id}" class="d-none category-types">
                     <div class="${data.typeBtnBackground} pokemon-single-type" style="height:40px;">${data.pokeFirstTyp}</div>
                     
                 </div>
